@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumerationStream", "EnumerationStream\EnumerationStream.csproj", "{DA641507-2A90-4B9D-8FA4-0629A7CBAC54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumerationStream.Tests", "EnumerationStream.Tests\EnumerationStream.Tests.csproj", "{8E5307C3-E01E-4272-AEAB-5DFB7F740292}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA641507-2A90-4B9D-8FA4-0629A7CBAC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA641507-2A90-4B9D-8FA4-0629A7CBAC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA641507-2A90-4B9D-8FA4-0629A7CBAC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA641507-2A90-4B9D-8FA4-0629A7CBAC54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5307C3-E01E-4272-AEAB-5DFB7F740292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5307C3-E01E-4272-AEAB-5DFB7F740292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5307C3-E01E-4272-AEAB-5DFB7F740292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5307C3-E01E-4272-AEAB-5DFB7F740292}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
