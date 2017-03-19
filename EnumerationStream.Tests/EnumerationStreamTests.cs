@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace EnumerationStream.Tests
@@ -75,6 +78,99 @@ namespace EnumerationStream.Tests
         private static EnumerationStream GetTarget(params object[] contents)
         {
             return new EnumerationStream(contents);
+        }
+    }
+
+    public class ObjectWriterTests
+    {
+        [Fact]
+        public void CanWriteAnObject()
+        {
+            var stream = new MemoryStream();
+            var jsonWriter = new JsonTextWriter(new StreamWriter(stream));
+
+
+            jsonWriter.WriteStartArray();
+            jsonWriter.WriteRaw(JsonConvert.SerializeObject(new
+            {
+                Description = "An Object.",
+                Use = "Demonstrating a point."
+            }));
+            jsonWriter.WriteEnd();
+            jsonWriter.Flush();
+            stream.Position = 0;
+            var result = new StreamReader(stream).ReadToEnd();
+
+            Assert.Equal("[{\"Description\":\"An Object.\",\"Use\":\"Demonstrating a point.\"}]", result);
+        }
+    }
+
+    public class ObjectReader<TOut> : IDisposable
+    {
+        private readonly TextReader _textReader;
+        private readonly JsonTextReader _jsonReader;
+        private readonly JsonSerializer _jsonSerializer;
+
+        public ObjectReader(TextReader textReader, JsonSerializerSettings settings)
+        {
+            _textReader = textReader;
+            _jsonReader = new JsonTextReader(_textReader);
+            _jsonSerializer = JsonSerializer.Create(settings);
+        }
+
+        public IEnumerable<TOut> ReadToEnd()
+        {
+            while (_jsonReader.Read())
+                if (_jsonReader.TokenType == JsonToken.StartObject)
+                    yield return _jsonSerializer.Deserialize<TOut>(_jsonReader);
+
+            _jsonReader.Close();
+        }
+
+        public void Dispose()
+        {
+            _textReader.Dispose();
+        }
+    }
+
+    public class ObjectWriter : IDisposable
+    {
+        private readonly JsonTextWriter _jsonWriter;
+        private readonly TextWriter _textWriter;
+        private readonly JsonSerializerSettings _settings;
+
+        public ObjectWriter(TextWriter textWriter, JsonSerializerSettings settings)
+        {
+            _textWriter = textWriter;
+            _jsonWriter = new JsonTextWriter(_textWriter);
+            _settings = settings;
+        }
+
+        public void Write(object toWrite)
+        {
+            if (_jsonWriter.WriteState == WriteState.Start)
+                _jsonWriter.WriteStartArray();
+
+            var objecString = JsonConvert.SerializeObject(toWrite, _settings);
+            _jsonWriter.WriteRaw(objecString);
+        }
+
+        public void Dispose()
+        {
+            Close();
+            _textWriter.Dispose();
+        }
+
+        public void Close()
+        {
+            _jsonWriter.WriteEnd();
+            Flush();
+            _jsonWriter.Close();
+        }
+
+        private void Flush()
+        {
+            _jsonWriter.Flush();
         }
     }
 }
